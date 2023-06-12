@@ -18,28 +18,44 @@
 
 ## Policy Creation
 
-Create 3 files:
-- main.tf
+Use *UDF* to connect to **client** using *SSH* or *WEB SHELL*.
+
+Create `lab1` directory and change into it.
+
+```
+cd
+mkdir lab1
+cd lab1
+```
+
+Create 3 files in your favorite text editor:
+
 - variables.tf
+
 - inputs.auto.tfvars
 
+- main.tf
 
+  
 
-**variables.tf**
+**variables.tf:**
+
 ```terraform
 variable bigip {}
 variable username {}
 variable password {}
 ```
 
-**inputs.auto.tfvars**
+**inputs.auto.tfvars:**
+
 ```terraform
 bigip = "10.1.1.9:443"
 username = "admin"
-password = "yYyYyYy"
+password = "A7U+=$vJ"
 ```
 
-**main.tf**
+**main.tf:**
+
 ```terraform
 terraform {
   required_providers {
@@ -67,9 +83,13 @@ resource "bigip_waf_policy" "this" {
 
 Now that you have your terraform project all set up, you can run it:
 
-```console
-foo@bar:~$ terraform init
+```bash
+terraform init
+```
 
+Example output:
+
+```console
 Initializing the backend...
 
 Initializing provider plugins...
@@ -96,8 +116,20 @@ If you ever set or change modules or backend configuration for Terraform,
 rerun this command to reinitialize your working directory. If you forget, other
 commands will detect it and remind you to do so if necessary.
 
-foo@bar:~$ terraform plan -out scenario1
+foo@bar:~$ 
 
+
+```
+
+Plan:
+
+```bash
+terraform plan -out scenario1
+```
+
+Example output:
+
+```console
 Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
   + create
 
@@ -130,8 +162,17 @@ Saved the plan to: scenario1
 
 To perform exactly these actions, run the following command to apply:
     terraform apply "scenario1"
+```
 
-foo@bar:~$ terraform apply "scenario1"
+Apply:
+
+```bash
+terraform apply "scenario1"
+```
+
+Example output:
+
+```console
 bigip_waf_policy.this: Creating...
 bigip_waf_policy.this: Still creating... [10s elapsed]
 bigip_waf_policy.this: Creation complete after 17s [id=41UMLL7yDtzoa0000Wimzw]
@@ -139,7 +180,9 @@ bigip_waf_policy.this: Creation complete after 17s [id=41UMLL7yDtzoa0000Wimzw]
 Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 ```
 
-Now, your WAF Policy might evolve over time. You  may want to add entities, manage  attack signature exceptions...
+> Now, your WAF Policy might evolve over time. You  may want to add entities, manage  attack signature exceptions...
+
+
 
 ## Policy lifecycle management
 
@@ -148,10 +191,10 @@ Now, your WAF Policy might evolve over time. You  may want to add entities, mana
 You want now to add a **MongoDB** server technology into your WAF Policy.
 The allowed values for server technologies are listed in the [Declarative WAF API documentation](https://clouddocs.f5.com/products/waf-declarative-policy/declarative_policy_v16_1.html#server-technologies)
 
-edit the **main.tf** file:
+Edit the **main.tf** file:
 ```terraform
 resource "bigip_waf_policy" "this" {
-  name                 = "localS1"
+  name                 = "scenario1"
   partition	           = "Common"
   template_name        = "POLICY_TEMPLATE_RAPID_DEPLOYMENT"
   application_language = "utf-8"
@@ -204,10 +247,15 @@ resource "bigip_waf_policy" "this" {
 }
 ```
 
-run it:
+Run it:
+
+```bash
+terraform plan -out scenario1
+```
+
+Example output:
 
 ```console
-foo@bar:~$ terraform plan -out scenario1
 [...]
 
 Plan: 0 to add, 1 to change, 0 to destroy.
@@ -218,8 +266,17 @@ Saved the plan to: scenario1
 
 To perform exactly these actions, run the following command to apply:
     terraform apply "scenario1"
+```
 
-foo@bar:~$ terraform apply "scenario1"
+Apply:
+
+```bash
+terraform apply "scenario1"
+```
+
+Example output:
+
+```console
 bigip_waf_policy.this: Modifying... [id=41UMLL7yDtzoa0000Wimzw]
 bigip_waf_policy.this: Still modifying... [id=41UMLL7yDtzoa0000Wimzw, 10s elapsed]
 bigip_waf_policy.this: Modifications complete after 17s [id=41UMLL7yDtzoa0000Wimzw]
@@ -227,9 +284,9 @@ bigip_waf_policy.this: Modifications complete after 17s [id=41UMLL7yDtzoa0000Wim
 Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
 ```
 
+
+
 ### Signatures Management
-
-
 
 We are creating a separate signature definition file with 3 signatures:
  - S1 enables and perform staging on the **200010293** attack signature.
@@ -274,10 +331,15 @@ resource "bigip_waf_policy" "this" {
 }
 ```
 
-run it:
+Run it:
+
+```bash
+terraform plan -out scenario1
+```
+
+Example output:
 
 ```console
-foo@bar:~$ terraform plan -out scenario1
 [...]
   # bigip_waf_policy.this will be updated in-place
   ~ resource "bigip_waf_policy" "this" {
@@ -316,8 +378,19 @@ Saved the plan to: scenario1
 
 To perform exactly these actions, run the following command to apply:
     terraform apply "scenario1"
+```
 
-foo@bar:~$ terraform apply "scenario1"
+> Notice the changes in the policy.
+
+Apply:
+
+```bash
+terraform apply "scenario1"
+```
+
+Example output:
+
+```console
 bigip_waf_policy.this: Modifying... [id=41UMLL7yDtzoa0000Wimzw]
 bigip_waf_policy.this: Still modifying... [id=41UMLL7yDtzoa0000Wimzw, 10s elapsed]
 bigip_waf_policy.this: Modifications complete after 17s [id=41UMLL7yDtzoa0000Wimzw]
@@ -327,9 +400,11 @@ Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
 
 At any time you can check the details on a specific Attack signature:
 
-```console
-$ terraform show -json | jq '.values.root_module.resources[] | select(.name == "S3")'
+```bash
+terraform show -json | jq '.values.root_module.resources[] | select(.name == "S3")'
 ```
+
+Example output:
 
 ```json
 {
@@ -357,20 +432,44 @@ $ terraform show -json | jq '.values.root_module.resources[] | select(.name == "
 }
 ```
 
-*Note: if you have multiple entities to manage, the entity lists in the bigip_waf_policy can be difficult to use. In that case, we recommend the use of [terraform hcl maps as presented in the lab 4](https://github.com/fchmainy/awaf_tf_docs/blob/main/4.multiple/README.md#enforcing-attack-signatures-on-the-qa-environment)*
+> If you have multiple entities to manage, the entity lists in the bigip_waf_policy can be difficult to use. In that case, we recommend the use of [terraform hcl maps as presented in the lab 4](https://github.com/fchmainy/awaf_tf_docs/blob/main/4.multiple/README.md#enforcing-attack-signatures-on-the-qa-environment)* [bigip terraform provider official documentation](https://registry.terraform.io/providers/F5Networks/bigip/latest/docs).
 
-[bigip terraform provider official documentation](https://registry.terraform.io/providers/F5Networks/bigip/latest/docs).
+
+
+### Check the security policy
+
+Go to BIG-IP named **qa** in **UDF**. `ACCESS`-> `TMUI`.
+
+Check the Security policy deployed by Terraform:
+
+- `Security` -> `Application Security` -> `Scenario1`
+
+  - Check the configured values
+
+- `Security` -> `Application Security` -> `Parameters` -> `Parameter List`
+
+  - Check the Parameters
+
+  
 
 ## Policy Creation via OpenAPI file
 
-Create 3 files:
-- main.tf
+Again, use *UDF* to connect to **client** using *SSH* or *WEB SHELL*.
+
+Go back to `~/lab1` directory.
+
+```
+cd ~/lab1
+```
+
+Create/check 3 files in your favorite text editor:
+
 - variables.tf
 - inputs.tfvars
-
-
+- main.tf
 
 **variables.tf**
+
 ```terraform
 variable bigip {}
 variable username {}
@@ -378,13 +477,15 @@ variable password {}
 ```
 
 **inputs.auto.tfvars**
+
 ```terraform
 bigip = "10.1.1.9:443"
 username = "admin"
-password = "yYyYyYy"
+password = "A7U+=$vJ"
 ```
 
 **main.tf**
+
 ```terraform
 terraform {
   required_providers {
@@ -410,14 +511,20 @@ resource "bigip_waf_policy" "this" {
   open_api_files            = ["https://api.swaggerhub.com/apis/F5EMEASSA/API-Sentence/3.0.1"]
   parameters                = [data.bigip_waf_entity_parameter.P1.json, data.bigip_waf_entity_parameter.P2.json, data.bigip_waf_entity_parameter.P3.json]
   signatures                = [data.bigip_waf_signatures.S1.json, data.bigip_waf_signatures.S2.json]
+}
 ```
 
 [How to create an OpenAPI security policy using a Swagger file](https://support.f5.com/csp/article/K07241201).
 
 run it:
 
+```bash
+terraform plan -out scenario1.swagger
+```
+
+Example output:
+
 ```console
-foo@bar:~$ terraform plan -out scenario1.swagger
 [...]
   # bigip_waf_policy.this must be replaced
 -/+ resource "bigip_waf_policy" "this" {
@@ -694,11 +801,40 @@ Saved the plan to: scenario1.swagger
 
 To perform exactly these actions, run the following command to apply:
     terraform apply "scenario1.swagger"
+```
 
-foo@bar:~$ terraform apply "scenario1"
+> Notice that the policy has to be recreated and identify the reason for this action.
+
+Apply:
+
+```bash
+terraform apply "scenario1.swagger"
+```
+
+Example output:
+
+```console
 bigip_waf_policy.this: Modifying... [id=41UMLL7yDtzoa0000Wimzw]
 bigip_waf_policy.this: Still modifying... [id=41UMLL7yDtzoa0000Wimzw, 10s elapsed]
 bigip_waf_policy.this: Modifications complete after 17s [id=41UMLL7yDtzoa0000Wimzw]
 
 Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
 ```
+
+### Check the security policy
+
+Go to BIG-IP named **qa** in **UDF**. `ACCESS`-> `TMUI`.
+
+Check the Security policy deployed by Terraform:
+
+- `Security` -> `Application Security` -> `scenario1.swagger`
+  - Check the configured values
+  - Check the external sqagger file reference
+- `Security` -> `Application Security` -> `URLs` -> `Allowed URLs`
+  - Check the imported API endpints from the swagger file
+- `Security` -> `Application Security` -> `Parameters` -> `Parameter List`
+  - Check the Parameters difference from parameters added by Terraform and imported from swagger file
+
+
+
+**This concludes the Scenario 1.**

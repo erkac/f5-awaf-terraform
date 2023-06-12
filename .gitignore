@@ -1,0 +1,23 @@
+
+# General
+.vscode
+.env
+.DS_Store
+SECRETS.md
+
+# Terraform
+.terraform
+*.tfstate*
+*.tfvars
+*.tfplan
+!*-example.tfvars
+*.terraform.lock.hcl
+
+# Configs
+config.env.sh
+00_environment.sh
+do-vlab-full.json
+
+# Ansible
+hosts
+
