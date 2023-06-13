@@ -42,7 +42,7 @@ prod_dc1_bigip = "10.1.1.8"
 prod_cloud_bigip = "10.1.1.7"
 qa_bigip = "10.1.1.9"
 username = "admin"
-password = "WhatisYourPassword?"
+password = "A7U+=$vJ"
 ```
 
 **main.tf**
@@ -207,8 +207,7 @@ resource "bigip_waf_policy" "QAS6" {
 
 Now you can test your application through the QA device.
 
-*For UDF users:
-check https://qa.f5demo.fch and see that the application is not broken and attacks are blocked*
+> For UDF users: check https://qa.f5demo.fch and see that the application is not broken and attacks are blocked
 
 
 ### 4. Enforce suggestions on the Production devices
