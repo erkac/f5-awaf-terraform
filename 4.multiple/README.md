@@ -23,7 +23,7 @@ The goal of this lab) is to manage an A.WAF Policy on multiple devices. It can b
 
 ## Policy Creation
 
-Create 4 files:
+Create 4 files in `~/lab4` directory:
 
 **variables.tf**
 ```terraform
@@ -38,7 +38,7 @@ variable password {}
 qa_bigip = "10.1.1.9:443"
 prod_bigip = "10.1.1.8:443"
 username = "admin"
-password = "whatIsYourBigIPPassword?"
+password = "A7U+=$vJ"
 ```
 
 **main.tf**
@@ -65,7 +65,7 @@ provider "bigip" {
 }
 
 data "http" "scenario4" {
-  url = "https://raw.githubusercontent.com/fchmainy/awaf_tf_docs/main/0.Appendix/scenario4.json"
+  url = "https://raw.githubusercontent.com/erkac/f5-awaf-terraform/main/0.Appendix/scenario4.json"
   request_headers = {
   	Accept = "application/json"
   }
@@ -91,7 +91,7 @@ resource "bigip_waf_policy" "s4_prod" {
     policy_import_json   = data.http.scenario4.body
 }
 ```
-*Note: the template name can be set to anything. When it is imported, we will overwrite the value*
+>  Note: the template name can be set to anything. When it is imported, we will overwrite the value
 
 
 Here, we are referencing an existing policy from a GitHub repository but it can also be created from zero on both BIG-IPs.
@@ -110,7 +110,7 @@ foo@bar:~$ more output_scenario4.1
 foo@bar:~$ terraform apply "scenario4"
 
 ```
-You can check on both BIG-IPs, the two policies are here and very consistent.
+You can check on both BIG-IPs (**qa** and **prod1**), that the two policies are here and very consistent.
 
 
 
@@ -194,7 +194,7 @@ data "bigip_waf_signatures" "map_prod" {
 }
 ```
 
-As you can see, we defined 2 different maps: one for the QA BIG-IP and one for the PRODUCTION BIG-IP because the "bigip_waf_signatures" data source are linked to their BIG-IP in order to have consistencies. Unlike the parameters and urls data sources which are just "json payload generators", the attack signature data sources has to read first the existence of the signatures id and their status on the BIG-IP before applying a configuration change.
+As you can see, we defined 2 different maps: one for the **qa** BIG-IP and one for the **prod1** BIG-IP because the "bigip_waf_signatures" data source are linked to their BIG-IP in order to have consistencies. Unlike the parameters and urls data sources which are just "json payload generators", the attack signature data sources has to read first the existence of the signatures id and their status on the BIG-IP before applying a configuration change.
 
 Now finally, update the **main.tf** file:
 
@@ -221,7 +221,7 @@ resource "bigip_waf_policy" "s4_prod" {
 }
 ```
 
-now, plan & apply!:
+now, plan & apply:
 
 ```console
 foo@bar:~$ terraform plan -out scenario4 > output_scenario4.2
@@ -229,15 +229,15 @@ foo@bar:~$ more output_scenario4.2
 foo@bar:~$ terraform apply "scenario4"
 ```
 
-We can verify that the 5 attack signatures have been enabled and enforced on the scenario4 WAF Policy on the QA BIG-IP (first 5 lines in the attack signatures list of the A.WAF Policy).
+We can verify that the 5 attack signatures have been enabled and enforced on the scenario4 WAF Policy on the **qa** BIG-IP (first 5 lines in the attack signatures list of the A.WAF Policy).
 
-Now, the applicatiopn owner identified that these last changes on the QA device have introduced some FP. Using the log events on the A.WAF GUI, we identified that :
+Now, the applicatiopn owner identified that these last changes on the **qa** device have introduced some FP. Using the log events on the A.WAF GUI, we identified that :
  - the attack signature **"200101558"** should be disabled globally
  - the attack signature **"200003068"** should be disabled for the **"/U1"** URL 
  - the attack signaure **"200003067"** should be enabled globally but disabled specifically for the parameter **"P1"**.
- 
+
  so we can proceed to the final changes before enforcing into production:
- 
+
 **inputs.auto.tfvars** file:
 
 ```terraform
@@ -284,7 +284,6 @@ data "bigip_waf_entity_parameter" "P1" {
   data_type       		= "alpha-numeric"
   perform_staging 		= true
   signature_overrides_disable 	= [200003067]
-  //url		  		= data.bigip_waf_entity_url.U1
 }
 ```
 
@@ -330,7 +329,7 @@ resource "bigip_waf_policy" "s4_prod" {
 }
 ```
 
-now, plan & apply!:
+now, plan & apply:
 
 ```console
 foo@bar:~$ terraform plan -out scenario4 > output_scenario4.3
@@ -338,3 +337,8 @@ foo@bar:~$ more output_scenario4.3
 foo@bar:~$ terraform apply "scenario4"
 ```
 
+Check the final WAF policy on **qa** and **prod1** BIG-IPs.
+
+
+
+**This concludes the Scenario 4.**
