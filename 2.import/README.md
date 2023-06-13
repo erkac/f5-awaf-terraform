@@ -338,3 +338,5 @@ and run it:
 foo@bar:~$ terraform plan -out scenario2
 foo@bar:~$ terraform apply "scenario2"
 ```
+
+**This concludes the Scenario 2.**
