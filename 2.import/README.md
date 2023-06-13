@@ -24,25 +24,27 @@ So the goal here is to **import** the current policy, which will be our current 
 
 ## Policy Import
 
-Create 3 files:
-- main.tf
+Create 3 files in `~/lab2` directory:
 - variables.tf
-- inputs.tfvars
+- inputs.auto.tfvars
+- main.tf
 
 
 
 **variables.tf**
+
 ```terraform
 variable bigip {}
 variable username {}
 variable password {}
 ```
 
-**inputs.tfvars**
+**inputs.auto.tfvars**
+
 ```terraform
 bigip = "10.1.1.9:443"
 username = "admin"
-password = "whatIsYourBigIPPassword?"
+password = "A7U+=$vJ"
 ```
 
 **main.tf**
@@ -126,12 +128,12 @@ func main() {
 }
 ```
 
-Now, run the following commands, so we can:
+Now, run the commands below, so we can:
 
-	1. Initialize the terraform project
-	2. Import the current WAF policy into our state
-	3. Set the JSON WAF Policy as our new baseline
-	4. Configure the lifecycle of our WAF Policy
+1. Initialize the terraform project
+2. Import the current WAF policy into our state
+3. Set the JSON WAF Policy as our new baseline
+4. Configure the lifecycle of our WAF Policy
 
 
 ```console

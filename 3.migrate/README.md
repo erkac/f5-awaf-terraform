@@ -32,10 +32,10 @@ The WAF Policy and its children objects (parameters, urls, attack signatures, ex
 
 ## Policy Migration
 
-Create 4 files:
-- main.tf
+Create 4 files in `~/lab3` directory:
 - variables.tf
 - inputs.auto.tfvars
+- main.tf
 - outputs.tf
 
 
