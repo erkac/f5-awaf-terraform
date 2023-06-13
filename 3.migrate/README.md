@@ -32,14 +32,17 @@ The WAF Policy and its children objects (parameters, urls, attack signatures, ex
 
 ## Policy Migration
 
+> In this lab you will be migrating WAF policy form BIG-IP **prod1** to **qa**.
+
 Create 4 files in `~/lab3` directory:
+
 - variables.tf
 - inputs.auto.tfvars
 - main.tf
 - outputs.tf
 
-
 **variables.tf**
+
 ```terraform
 variable previous_bigip {}
 variable new_bigip {}
@@ -48,6 +51,7 @@ variable password {}
 ```
 
 **inputs.auto.tfvars**
+
 ```terraform
 previous_bigip = "10.1.1.8:443"
 new_bigip = "10.1.1.9:443"
@@ -82,14 +86,14 @@ provider "bigip" {
 resource "bigip_waf_policy" "current" {
   provider	       = bigip.old
   partition            = "Common"
-  name                 = "scenario3"
+  name                 = "localS1bis"
   template_name        = "POLICY_TEMPLATE_RAPID_DEPLOYMENT"
 }
 ```
-*Note: the template name can be set to anything. When it is imported, we will overwrite the value*
-
+>  Note: the template name can be set to anything. When it is imported, we will overwrite the value
 
 **outputs.tf**
+
 ```terraform
 output "policyId" {
 	value	= bigip_waf_policy.current.policy_id
@@ -103,7 +107,7 @@ output "policyJSON" {
 Here we defined two Big-IPs: **"old"** and **"new"**. The "old" BIG-IP has the existing A.WAF Policies, the "new" is our target.
 
 Same as [scenario #2](https://github.com/fchmainy/awaf_tf_docs/blob/main/2.import/README.md) we need the A.WAF Policy ID to make the initial import:
-- check on the iControl REST API Endpoint: /mgmt/tm/asm/policies?$filter=name+eq+**scenario3**&$select=id
+- check on the iControl REST API Endpoint: /mgmt/tm/asm/policies?$filter=name+eq+**localS1bis**&$select=id
 - get a script example in the lab/scripts/ folder
 - run the following piece of code in the [Go PlayGround](https://go.dev/play/)
 
@@ -127,7 +131,7 @@ func Hasher(policyName string) string {
 
 func main() {
 	var partition string = "Common"
-	var policyName string = "scenario3"
+	var policyName string = "localS1bis"
 
 	fullName := "/" + partition + "/" + policyName
 	policyId := Hasher(fullName)
@@ -152,11 +156,11 @@ Initializing provider plugins...
 [...]
 Terraform has been successfully initialized!
 
-foo@bar:~$ terraform import bigip_waf_policy.current YiEQ4l1Fw1U9UnB2-mTKWA
-bigip_waf_policy.this: Importing from ID "YiEQ4l1Fw1U9UnB2-mTKWA"...
+foo@bar:~$ terraform import bigip_waf_policy.current boDeaFJ4zByXdQclfQefnw
+bigip_waf_policy.this: Importing from ID "boDeaFJ4zByXdQclfQefnw"...
 bigip_waf_policy.this: Import prepared!
   Prepared bigip_waf_policy for import
-bigip_waf_policy.this: Refreshing state... [id=YiEQ4l1Fw1U9UnB2-mTKWA]
+bigip_waf_policy.this: Refreshing state... [id=boDeaFJ4zByXdQclfQefnw]
 
 Import successful!
 
@@ -165,7 +169,7 @@ your Terraform state and will henceforth be managed by Terraform.
 ```
 
 
-Now update your terraform main.tf file with the ouputs of the following two commands:
+Now update your terraform **main.tf** file with the ouputs of the following two commands:
 
 
 ```console
@@ -189,8 +193,8 @@ resource "bigip_waf_policy" "this" {
 ```
 
 This a migration use case so we don't need anymore the current WAF Policy from the existing BIG-IP.
-So, using the collected data from the terraform import, we are now updating our **main.tf** file:
-If you want to keep the policy on both BIG-IPs, [please get there](UPDATE LINK!!!!)
+So, using the collected data from the terraform import, we are now updating our **main.tf** file, please add the following part:
+
 ```terraform
 resource "bigip_waf_policy" "migrated" {
     provider	           = bigip.new
@@ -204,7 +208,7 @@ resource "bigip_waf_policy" "migrated" {
 }
 ```
 
-*Note: You can note that we replaced the "policy_export_json" argument with "policy_import_json" pointing to the imported WAF Policy JSON file.*
+> Note: You can note that we replaced the "policy_export_json" argument with "policy_import_json" pointing to the imported WAF Policy JSON file.
 
 Finally, we can plan & apply our new project.
 
@@ -235,7 +239,12 @@ policyId = "EdchwjSqo9cFtYP-iWUJmw"
 policyJSON = "{[...]}"
 ```
 
+You can try to motify **output.tf** to see also `policyId` and `policyJSON` from the migrated device.
+
+
+
 ## Policy lifecycle management
+
 Now you can manage your WAF Policy as we did [in the previous lab](https://github.com/fchmainy/awaf_tf_docs/edit/main/1.create/README.md#policy-lifecycle-management)
 
 You can check your WAF Policy on your BIG-IP after each terraform apply.
@@ -347,5 +356,8 @@ foo@bar:~$ terraform plan -out scenario3
 foo@bar:~$ terraform apply "scenario3"
 ```
 
+Check the final WAF policy on BIG-IP **qa**.
 
 
+
+**This concludes the Scenario 3.**
