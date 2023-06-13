@@ -1,19 +1,11 @@
-<div align="center">
-
 # Scenario #6: Managing an A.WAF Policy with Policy Builder on multiple device
-
-</div>
-
-</br></br>
 
 ## Goals
 The goal of this lab is to manage Policy Builder Suggestions an A.WAF Policy from on multiple devices or clusters. Several use cases are covered here:
   - Multiple devices serving and protecting the same application (multiple datacenters, application spanned across multiple clouds... By nature, each standalone device or clusters can see different traffic patterns so the suggestions can be somehow differents. The goal here is to consolidate the suggestions before enforcing them.
   - Production BIG-IPs protecting the application therefore seeing the real life traffic flow for seeding the Policy Builder but all changes need to be first validated in the qualification environment before enforcing into production.
 
-Note: The two uses cases aforementioned are not mutually exclusive and can be managed within a single workflow
-
-</br></br>
+> Note: The two uses cases aforementioned are not mutually exclusive and can be managed within a single workflow
 
 ## Pre-requisites
 
@@ -29,12 +21,11 @@ Note: The two uses cases aforementioned are not mutually exclusive and can be ma
  - [ ] use of F5 bigip provider version 1.16.0 minimal
  - [ ] use of Hashicorp version following [Link](https://clouddocs.f5.com/products/orchestration/terraform/latest/userguide/overview.html#releases-and-versioning)
 
-</br></br>
 
 ## Policy Creation
 
 
-You need to create the 4 following files:
+You need to create the 4 following files in `~/lab6` directory:
 
 **variables.tf**
 ```terraform
@@ -139,10 +130,6 @@ output "QAS6JSON" {
 }
 ```
 
-
-
-</br></br>
-
 ## Simulate a WAF Policy workflow
 
 Here is a typical workflow:
@@ -150,35 +137,27 @@ Here is a typical workflow:
 On each BIG-IP, there is a **scenario6.vs** Virtual Server.
 1. We will create and associate the same WAF Policy to these Virtual Servers.
 2. Runing traffic on Production devices. We will make sure we are not running the same requests on both Production devices so we get distinct suggestions.
-3. Test the suggestions from Prod1 and Prod2 devices on the QA device and check that the application is not broken.
+3. Test the suggestions from **Prod1** and **Prod2** devices on the **QA** device and check that the application is not broken.
 4. Enforce suggestions on the Production devices.
 
-*Notes:
-There are some changes that may be specific to the QA env, such as setting [Trusted IP addresses](https://techdocs.f5.com/en-us/bigip-14-1-0/big-ip-asm-implementations-14-1-0/changing-how-a-security-policy-is-built.html). So we will make the specific tuning first.
-*
+> Notes: There are some changes that may be specific to the QA env, such as setting [Trusted IP addresses](https://techdocs.f5.com/en-us/bigip-14-1-0/big-ip-asm-implementations-14-1-0/changing-how-a-security-policy-is-built.html). So we will make the specific tuning first.
 
 ### 1. Policy creation and association 
 
 Plan and apply your new Terraform project.
-```console
-foo@bar:~$ terraform init
-
-foo@bar:~$ terraform plan -out scenario6
-
-foo@bar:~$ terraform apply "scenario6"
+```bash
+terraform init
+terraform plan -out scenario6
+terraform apply "scenario6"
 ```
 
 Now go on your WebUI and associate the WAF Policies to the **scenario6.vs** Virtual Servers. (here we do it manually but it can definitely be done using the **"bigip_as3"** terraform resource from the same **Terraform "F5Networks/bigip" provider**).
-
-</br></br>
 
 ### 2. Running *Real life traffic*
 
 Now, run both legitimate AND illegitimate traffic against your two production BIG-IP devices (scenario6 virtual servers on PROD1 and PROD2 BIG-IPs). Try to throw different attacks on each devices so we make sure we collect different Policy Builder suggestions (checkout the recommended steps described on [Module5](https://github.com/fchmainy/awaf_tf_docs/tree/main/5.policyBuilderSingle#simulate-a-waf-policy-workflow)).
 
 You may have to run multiple time the same request to make sure we get a satisfying learning score.
-
-</br></br>
 
 ### 3. Collect and test the Policy Builder suggestions.
 
@@ -223,8 +202,7 @@ resource "bigip_waf_policy" "QAS6" {
 }
 ```
 
-*Notes:*
-*There are obviously some redundant learning suggestions on both data sources but the Declarative WAF API automatically removes them.*
+> Notes: There are obviously some redundant learning suggestions on both data sources but the Declarative WAF API automatically removes them.
 
 
 Now you can test your application through the QA device.
@@ -238,7 +216,7 @@ check https://qa.f5demo.fch and see that the application is not broken and attac
 In a real life scenario, there are two ways we can consider this step:
 
    a) the QA device WAF Policy should be 100% consistent with production devices
-  
+
    b) the QA device WAF Policy may have settings differences with production devices (Trusted IP exceptions for example)
 
 
@@ -279,11 +257,11 @@ resource "bigip_waf_policy" "QAS6" {
 }
 ```
 
-now, plan & apply!:
+now, plan & apply:
 
-```console
-foo@bar:~$ terraform plan -out scenario6
-foo@bar:~$ terraform apply "scenario6"
+```bash
+terraform plan -out scenario6
+terraform apply "scenario6"
 ```
 
 
@@ -325,10 +303,11 @@ resource "bigip_waf_policy" "QAS6" {
 ```
 now, plan & apply!:
 
-```console
-foo@bar:~$ terraform plan -out scenario6
-foo@bar:~$ terraform apply "scenario6"
+```bash
+terraform plan -out scenario6
+terraform apply "scenario6"
 ```
 
 
 
+**This concludes the Scenario 6 and the whole Terraform AWAF Lab. Good work!**
