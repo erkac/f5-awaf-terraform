@@ -56,7 +56,7 @@ variable password {}
 previous_bigip = "10.1.1.8:443"
 new_bigip = "10.1.1.9:443"
 username = "admin"
-password = "whatIsYourBigIPPassword?"
+password = "A7U+=$vJ"
 ```
 
 **main.tf**
