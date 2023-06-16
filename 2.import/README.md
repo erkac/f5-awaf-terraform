@@ -230,7 +230,7 @@ policyJSON = "{[...]}"
 ```
 
 ## Policy lifecycle management
-Now you can manage your WAF Policy as we did [in the previous lab](https://github.com/fchmainy/awaf_tf_docs/edit/main/1.create/README.md#policy-lifecycle-management)
+Now you can manage your WAF Policy as we did [in the previous lab](/1.create/README.md#policy-lifecycle-management)
 
 You can check your WAF Policy on your BIG-IP after each terraform apply.
 

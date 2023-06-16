@@ -12,9 +12,7 @@ Every scenario is independant but we raise the bar progressively in term of comp
 For users who can run these exercices in [UDF](https://udf.f5.com) you will find every file and scenarios in $HOME/terraform. The infrastructure is the following schema:
 
 
-![infrastructure](https://github.com/fchmainy/awaf_tf_docs/raw/main/0.Appendix/UDF-lab-architecture.png)
-
-
+![infrastructure](/0.Appendix/UDF-lab-architecture.png)
 
 
 ## Some use-cases

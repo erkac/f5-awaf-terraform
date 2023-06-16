@@ -432,7 +432,7 @@ Example output:
 }
 ```
 
-> If you have multiple entities to manage, the entity lists in the bigip_waf_policy can be difficult to use. In that case, we recommend the use of [terraform hcl maps as presented in the lab 4](https://github.com/fchmainy/awaf_tf_docs/blob/main/4.multiple/README.md#enforcing-attack-signatures-on-the-qa-environment)* [bigip terraform provider official documentation](https://registry.terraform.io/providers/F5Networks/bigip/latest/docs).
+> If you have multiple entities to manage, the entity lists in the bigip_waf_policy can be difficult to use. In that case, we recommend the use of [terraform hcl maps as presented in the lab 4](/4.multiple/README.md#enforcing-attack-signatures-on-the-qa-environment)* [bigip terraform provider official documentation](https://registry.terraform.io/providers/F5Networks/bigip/latest/docs).
 
 
 

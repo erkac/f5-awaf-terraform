@@ -7,7 +7,7 @@ You can meet this scenario in multiple use-cases:
  - Re-Hosting (aka Lift&Shift) in a Cloud migration project
  - Back-and-Forth importing / exporting WAF Policies between environments (dev / test / QA / Production)
 
-The goal is to leverage [the previous import scenario](https://github.com/fchmainy/awaf_tf_docs/blob/main/2.import/README.md) in order to carry and ingest the WAF Policy from one BIG-IP to another while keeping its state through Terraform.
+The goal is to leverage [the previous import scenario](/2.import/README.md) in order to carry and ingest the WAF Policy from one BIG-IP to another while keeping its state through Terraform.
 
 
 The WAF Policy and its children objects (parameters, urls, attack signatures, exceptions...) can be tightly coupled to a BIG-IP AND / OR can be shared across multiple policies depending on the use case.
@@ -106,7 +106,7 @@ output "policyJSON" {
 
 Here we defined two Big-IPs: **"old"** and **"new"**. The "old" BIG-IP has the existing A.WAF Policies, the "new" is our target.
 
-Same as [scenario #2](https://github.com/fchmainy/awaf_tf_docs/blob/main/2.import/README.md) we need the A.WAF Policy ID to make the initial import:
+Same as [scenario #2](/2.import/README.md) we need the A.WAF Policy ID to make the initial import:
 - check on the iControl REST API Endpoint: /mgmt/tm/asm/policies?$filter=name+eq+**localS1bis**&$select=id
 - get a script example in the lab/scripts/ folder
 - run the following piece of code in the [Go PlayGround](https://go.dev/play/)
@@ -245,7 +245,7 @@ You can try to motify **output.tf** to see also `policyId` and `policyJSON` from
 
 ## Policy lifecycle management
 
-Now you can manage your WAF Policy as we did [in the previous lab](https://github.com/fchmainy/awaf_tf_docs/edit/main/1.create/README.md#policy-lifecycle-management)
+Now you can manage your WAF Policy as we did [in the previous lab](/1.create/README.md#policy-lifecycle-management)
 
 You can check your WAF Policy on your BIG-IP after each terraform apply.
 

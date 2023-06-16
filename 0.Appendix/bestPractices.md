@@ -50,7 +50,7 @@ You can have multiple tfvars input files:
 -	One for the urls (ex: urls.auto.tfvars)
 -	…
 
-There is an example [here](https://github.com/fchmainy/awaf_tf_docs/tree/main/4.multiple#enforcing-attack-signatures-on-the-qa-environment)
+There is an example [here](/4.multiple#enforcing-attack-signatures-on-the-qa-environment)
 
 Or you can manage all your input variables into a single tfvars file per WAF Policy. 
 Simply don’t put all the inputs for all WAF policies into a single consolidated file, it will be unmanageable.

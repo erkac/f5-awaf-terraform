@@ -155,7 +155,7 @@ Now go on your WebUI and associate the WAF Policies to the **scenario6.vs** Virt
 
 ### 2. Running *Real life traffic*
 
-Now, run both legitimate AND illegitimate traffic against your two production BIG-IP devices (scenario6 virtual servers on PROD1 and PROD2 BIG-IPs). Try to throw different attacks on each devices so we make sure we collect different Policy Builder suggestions (checkout the recommended steps described on [Module5](https://github.com/fchmainy/awaf_tf_docs/tree/main/5.policyBuilderSingle#simulate-a-waf-policy-workflow)).
+Now, run both legitimate AND illegitimate traffic against your two production BIG-IP devices (scenario6 virtual servers on PROD1 and PROD2 BIG-IPs). Try to throw different attacks on each devices so we make sure we collect different Policy Builder suggestions (checkout the recommended steps described on [Module5](/5.policyBuilderSingle#simulate-a-waf-policy-workflow)).
 
 You may have to run multiple time the same request to make sure we get a satisfying learning score.
 
