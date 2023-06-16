@@ -90,7 +90,7 @@ resource "bigip_waf_policy" "current" {
   template_name        = "POLICY_TEMPLATE_RAPID_DEPLOYMENT"
 }
 ```
->  Note: the template name can be set to anything. When it is imported, we will overwrite the value
+> Note: the template name can be set to anything. When it is imported, we will overwrite the value
 
 **outputs.tf**
 

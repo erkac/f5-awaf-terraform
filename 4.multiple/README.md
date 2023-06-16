@@ -91,7 +91,7 @@ resource "bigip_waf_policy" "s4_prod" {
     policy_import_json   = data.http.scenario4.body
 }
 ```
->  Note: the template name can be set to anything. When it is imported, we will overwrite the value
+> Note: the template name can be set to anything. When it is imported, we will overwrite the value
 
 
 Here, we are referencing an existing policy from a GitHub repository but it can also be created from zero on both BIG-IPs.

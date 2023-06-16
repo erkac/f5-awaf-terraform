@@ -68,4 +68,4 @@ The goal of [this lab](/6.policyBuilderMultiple/README.md) is to manage Policy B
 - multiple devices serving and protecting the same application (multiple datacenters, application spanned across multiple clouds... By nature, each standalone device or clusters can see different traffic patterns so the suggestions can be somehow differents. The goal here is to consolidate the suggestions before enforcing.
 - Production BIG-IPs protecting the application therefore seeing the real life traffic flow for seeding the Policy Builder but all changes need to be validated in the qualification environment before enforcing into production.
 
-*Note: The two uses cases aforementioned are not mutually exclusive and can be managed within a single workflow*
+> Note: The two uses cases aforementioned are not mutually exclusive and can be managed within a single workflow
