@@ -508,7 +508,7 @@ resource "bigip_waf_policy" "this" {
   application_language      = "utf-8"
   enforcement_mode          = "blocking"
   server_technologies       = ["MySQL", "Unix/Linux", "MongoDB"]
-  open_api_files            = ["https://api.swaggerhub.com/apis/F5EMEASSA/API-Sentence/3.0.1"]
+  open_api_files            = ["https://api.swaggerhub.com/apis/F5EMEASSA/API-Sentence-2022/v1"]
   parameters                = [data.bigip_waf_entity_parameter.P1.json, data.bigip_waf_entity_parameter.P2.json, data.bigip_waf_entity_parameter.P3.json]
   signatures                = [data.bigip_waf_signatures.S1.json, data.bigip_waf_signatures.S2.json]
 }
@@ -531,7 +531,7 @@ Example output:
       ~ id                   = "41UMLL7yDtzoa0000Wimzw" -> (known after apply)
       ~ name                 = "scenario1" -> "scenario1-2.swagger" # forces replacement
       + open_api_files       = [
-          + "https://api.swaggerhub.com/apis/F5EMEASSA/API-Sentence/3.0.1",
+          + "https://api.swaggerhub.com/apis/F5EMEASSA/API-Sentence-2022/v1",
         ]
       ~ policy_export_json   = jsonencode(
             {
